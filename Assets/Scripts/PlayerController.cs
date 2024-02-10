@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float boostSpeed = 30f;
     [SerializeField] float regularSpeed = 10f;
     [SerializeField] float torqueAmount = 2f;
+    [SerializeField] float jumpForce = 500f; // Jump force
     public bool canMove = true;
-
+    public bool canJump = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,9 +26,9 @@ public class PlayerController : MonoBehaviour
         {
             PlayerInput();
             RespondToBoost();
+
         }
     }
-
 
     public void DisableControl()
     {
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerInput()
     {
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             rb2d.AddTorque(torqueAmount);
@@ -57,5 +59,15 @@ public class PlayerController : MonoBehaviour
         {
             rb2d.AddTorque(torqueAmount * -1);
         }
+        // Call Jump method when space key is pressed
+        else if (Input.GetKeyDown(KeyCode.Space) && canJump)
+        {
+            Jump();
+        }
+    }
+    private void Jump()
+    {
+        // Apply jump force if grounded
+        rb2d.AddForce(Vector2.up * jumpForce);
     }
 }
