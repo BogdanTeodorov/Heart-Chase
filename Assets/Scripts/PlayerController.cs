@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canMove == true)
+        if (canMove)
         {
             PlayerInput();
             RespondToBoost();
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
             rb2d.AddTorque(torqueAmount * -1);
         }
         // Call Jump method when space key is pressed
-        else if (Input.GetKeyDown(KeyCode.Space) && canJump)
+        if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             Jump();
         }

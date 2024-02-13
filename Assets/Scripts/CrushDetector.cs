@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,19 @@ public class CrushDetector : MonoBehaviour
     [SerializeField] float delay = 1f;
     [SerializeField] ParticleSystem crashEffect;
     [SerializeField] AudioClip audioSFX;
+    [SerializeField] int lives = 3;
+    [SerializeField] TextMeshProUGUI livesText;
+
+    Vector3 respawnPosition; // Store the respawn position
+    Quaternion respawnRotation;
+
+    void Start()
+    {
+
+        respawnRotation = transform.rotation;
+        respawnPosition = transform.position; // Set the respawn position to the player's initial position
+        UpdateLivesText(); // Update lives text when the game starts
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -16,13 +30,9 @@ public class CrushDetector : MonoBehaviour
             if (FindObjectOfType<PlayerController>().canMove)
             {
                 crashEffect.Play();
-                GetComponent<AudioSource>().PlayOneShot(audioSFX);
-                FindObjectOfType<PlayerController>().DisableControl();
-                Invoke("Crash", delay);
+                LoseLife(); // Player loses a life
             }
-
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -32,22 +42,40 @@ public class CrushDetector : MonoBehaviour
             if (FindObjectOfType<PlayerController>().canMove)
             {
                 crashEffect.Play();
-                GetComponent<AudioSource>().PlayOneShot(audioSFX);
-                FindObjectOfType<PlayerController>().DisableControl();
-                Invoke("Crash", delay);
+                LoseLife(); // Player loses a life
             }
-
         }
-
-
     }
 
-
-    void Crash()
+    void LoseLife()
     {
-        Debug.Log("Where is my head?");
-        SceneManager.LoadScene(0);
-
+        lives--;
+        GetComponent<AudioSource>().PlayOneShot(audioSFX);
+        FindObjectOfType<PlayerController>().DisableControl();
+        UpdateLivesText(); // Update lives text after losing a life
+        Invoke("Respawn", delay); // Call Respawn after delay
     }
 
+    void UpdateLivesText()
+    {
+        livesText.text = "Lives: " + lives.ToString();
+    }
+
+    void Respawn()
+    {
+        UpdateLivesText(); // Update lives text after losing a life
+        if (lives <= 0)
+        {
+            // Game over logic goes here
+            // For now, just reload the scene
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            // Respawn the player at the beginning of the level
+            transform.rotation = respawnRotation;
+            transform.position = respawnPosition;
+            FindObjectOfType<PlayerController>().canMove = true; // Enable player control
+        }
+    }
 }
