@@ -9,15 +9,17 @@ public class CrushDetector : MonoBehaviour
     [SerializeField] float delay = 1f;
     [SerializeField] ParticleSystem crashEffect;
     [SerializeField] AudioClip audioSFX;
-    [SerializeField] int lives = 3;
+    public int lives = 3;
     [SerializeField] TextMeshProUGUI livesText;
+    [SerializeField] TextMeshProUGUI gameOverText;
+
 
     Vector3 respawnPosition; // Store the respawn position
     Quaternion respawnRotation;
 
     void Start()
     {
-
+        gameOverText.text = "";
         respawnRotation = transform.rotation;
         respawnPosition = transform.position; // Set the respawn position to the player's initial position
         UpdateLivesText(); // Update lives text when the game starts
@@ -68,7 +70,10 @@ public class CrushDetector : MonoBehaviour
         {
             // Game over logic goes here
             // For now, just reload the scene
-            SceneManager.LoadScene(0);
+            gameOverText.text = "Game Over! Press ESC to enter Menu";
+            Time.timeScale = 0f;
+            FindObjectOfType<SurfaceEffector2D>().speed = 0;
+            //SceneManager.LoadScene(FindObjectOfType<FinishLine>().levelIndex);
         }
         else
         {

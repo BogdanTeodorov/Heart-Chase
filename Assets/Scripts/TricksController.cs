@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TricksController : MonoBehaviour
 {
-    public int trickScore = 20; // Score for trick
+    public int trickScore = 5; // Score for trick
     float previousRotation = 0f;
     float totalScore;
 
