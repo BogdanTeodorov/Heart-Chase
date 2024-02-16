@@ -1,2 +1,2 @@
 # Heart-Chase
-Unity 2D game
+**Heart Chase** is an exhilarating 2D snowboarding game where players embark on an adventure to collect hearts and candies strewn across the snowy slopes while avoiding treacherous obstacles that threaten to derail their journey. The goal is to complete each level with finesse, accumulating as many hearts as possible to achieve higher ranks, all while executing thrilling aerial tricks for extra points.
